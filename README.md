@@ -1,3 +1,3 @@
 # sniffer
 
-packet capturing stuff using scapy
+packet capturing stuff
