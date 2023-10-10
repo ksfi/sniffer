@@ -14,7 +14,7 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
 
     for sent, received in result:
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
-    print("IP Address\t\t\tMAC Address\t\t\tInfo")
+    print("\tIP Address\t\t\tMAC Address\t\tInfo")
     print("----------------------------------------------------------------------------")
 
     vendor = manuf.MacParser()

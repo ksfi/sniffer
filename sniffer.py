@@ -61,9 +61,10 @@ class Analyzer:
         run()
 
     @staticmethod
-    def domains(plot: bool = False, nb_iter: int = 100) -> None:
-        from collections import Counter
+    def domains(plot: bool = False, nb_iter: int = 10) -> None:
         import socket
+        from collections import Counter
+        from tqdm import tqdm
         def _domains() -> Counter:
             def analyze_packet(packet) -> None:
                 if packet.haslayer('IP'):
@@ -78,18 +79,17 @@ class Analyzer:
             sc.sniff(filter="ip", prn=analyze_packet, count=100)
             top_n: int = 10
             most_frequent_domains: List[Tuple[str, int]] = frequent_domains.most_common()
-            for domain, count in most_frequent_domains:
-                print(f"{domain}: {count} times")
+ #            for domain, count in most_frequent_domains:
+ #                print(f"{domain}: {count} times")
             return frequent_domains
 
         def run() -> None:
             collected_data: Counter = Counter()
             k: int = 0
-            while (k < nb_iter):
+            for _ in tqdm(range(nb_iter), desc="Processing", unit="iteration"):
                 frequent_domain: Counter = _domains()
                 collected_data += frequent_domain
                 k+=1
-                print("-------")
 
             if plot:
                 top_n: int = 10
