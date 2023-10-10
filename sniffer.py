@@ -8,7 +8,7 @@ class Analyzer:
     @staticmethod
     def sniff(target_ip: str = None, target_mac = None) -> None:
         def packet_handler(packet):
-            if target_ip is None:
+            if target_ip is None and target_mac is None:
                 print(packet.summary())
             elif packet.src == target_mac or packet.dst == target_mac:
                 print(packet.summary())
