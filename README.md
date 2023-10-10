@@ -1,8 +1,5 @@
 # sniffer
 
-Work in progress
-
-
 ## Usage:
 
 
