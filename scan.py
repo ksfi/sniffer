@@ -1,6 +1,6 @@
 import manuf
 from sniffer import Analyzer
-from scapy.all import ARP, Ether, srp, sniff, IP
+from scapy.all import ARP, Ether, srp
 
 from typing import Dict, Tuple, List
 
