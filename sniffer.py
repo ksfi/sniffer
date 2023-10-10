@@ -12,11 +12,6 @@ class Analyzer:
                 print(packet.summary())
             elif packet.src == target_mac or packet.dst == target_mac:
                 print(packet.summary())
-#             if packet.haslayer(sc.Ether) and packet.haslayer(sc.IP):
-#                 if packet[sc.Ether].src == target_mac or packet[sc.Ether].dst == target_mac:
-#                     print(packet.summary())
-#                 else:
-#                     print(packet.summary())
         try:
             if target_ip is not None:
                 sc.sniff(filter=f"host {target_ip}", prn=packet_handler)
