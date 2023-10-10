@@ -1,6 +1,6 @@
 # sniffer
 
-Sniffing, spoofing and other analyses
+Sniffing, spoofing and other stuff
 
 
 ## Usage:
