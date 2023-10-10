@@ -14,7 +14,7 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
 
     for sent, received in result:
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
-    print("Watching the network...\n\tIP Address\t\t\tMAC Address\t\tInfo")
+    print("\n\tIP Address\t\t\tMAC Address\t\tInfo")
     print("----------------------------------------------------------------------------")
 
     vendor = manuf.MacParser()
@@ -29,13 +29,14 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
     return ret_mac, ret_arp
 
 def run():
-    arp = scan()
-    devices: int = len(arp[0])
-    if devices == 0:
-        print("No activity detected on the network")
-    print("--------------\n--------------")
     while (1):
-        mode: str = input("\n1- Sniffing 2- Spoofing 3- Data transfers 4- Domains\n")
+        print("\nWatching the network...")
+        arp = scan()
+        devices: int = len(arp[0])
+        if devices == 0:
+            print("No activity detected on the network")
+        print("--------------\n--------------")
+        mode: str = input("\n1- Sniffing 2- Spoofing 3- Data transfers 4- Domains r- Refresh\n--> ")
         try:
             if int(mode) == 1:
                 if devices > 0:
@@ -66,7 +67,10 @@ def run():
                 Analyzer.domains(plot=True)
                 exit()
         except:
-            print("Wrong entry")
+            if mode == 'r':
+                print("Refreshing...")
+            else:
+                print("Wrong entry")
 
 if __name__ == "__main__":
     run()
