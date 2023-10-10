@@ -6,6 +6,23 @@ from typing import IO, List, Tuple
 
 class Analyzer:
     @staticmethod
+    def sniff(target_ip: str = None, target_mac = None) -> None:
+        def packet_handler(packet):
+            if packet.haslayer(sc.Ether) and packet.haslayer(sc.IP):
+                if packet[sc.Ether].src == target_mac or packet[sc.Ether].dst == target_mac:
+                    print(packet.summary())
+                else:
+                    print(packet.summary())
+        try:
+            if target_ip is not None:
+                sc.sniff(filter=f"host {target_ip}", prn=packet_handler)
+            else:
+                sc.sniff(prn=packet_handler)
+        except KeyboardInterrupt:
+            print("quit sniffing")
+            exit()
+
+    @staticmethod
     def speed(plot: bool = False, nb_iter: int = 100) -> None:
         import numpy as np
         def _speed() -> float:
@@ -94,5 +111,38 @@ class Analyzer:
 
         run()
 
+    @staticmethod
+    def bandwith(plot: bool = False) -> None:
+        time_intervals = [] 
+        bandwidth_usage = []
+        start_time = time.time()
+        def _bandwith() -> None:
+            def analyze_packet(pkt):
+                global start_time
+                now = time.time()
+                time_intervals.append(now - start_time)
+                bandwidth_usage.append(len(pkt))
+                start_time = now
+            sc.sniff(prn=analyze_packet, timeout=60)
+
+        def run() -> None:
+            _bandwith()
+            if plot:
+                plt.plot(time_intervals, bandwidth_usage)
+                plt.xlabel("Time (seconds)")
+                plt.ylabel("Bandwidth Consumption (bytes)")
+                plt.title("Bandwidth Consumption Over Time")
+                plt.grid(True)
+                plt.show()
+        run()
+
+def play():
+    def analyze_packet(packet):
+        print(packet)
+        if sc.Dot3 in packet:
+            print(packet.payload)
+            exit()
+    sc.sniff(prn=analyze_packet)
+
 if __name__ == "__main__":
-    Analyzer.speed(plot=True)
+    play()
