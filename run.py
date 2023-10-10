@@ -14,7 +14,7 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
 
     for sent, received in result:
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
-    print("\tIP Address\t\t\tMAC Address\t\tInfo")
+    print("Watching the network...\n\tIP Address\t\t\tMAC Address\t\tInfo")
     print("----------------------------------------------------------------------------")
 
     vendor = manuf.MacParser()
@@ -30,12 +30,18 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
 
 def run():
     arp = scan()
+    devices: int = len(arp[0])
+    if devices == 0:
+        print("No activity detected on the network")
     print("--------------\n--------------")
     while (1):
-        mode: str = input("1- Sniffing 2- Spoofing 3- Data transfers 4- Domains\n")
+        mode: str = input("\n1- Sniffing 2- Spoofing 3- Data transfers 4- Domains\n")
         try:
             if int(mode) == 1:
-                net: str = input("Choose what to sniff: (type 'all' to sniff all) ")
+                if devices > 0:
+                    net: str = input("Choose what to sniff: (type 'all' to sniff all) ")
+                else:
+                    net: str = 'all'
                 if net.lower() != 'all':
                     target_mac = arp[0][int(net)]
                     target_ip = arp[1][target_mac]
@@ -45,6 +51,9 @@ def run():
                     print(f"Sniffing all...")
                     Analyzer.sniff()
             if int(mode) == 2:
+                if devices == 0:
+                    print("Nothing to spoof...")
+                    target_mac = arp[0][int(net)]
                 net: str = input("Choose what to spoof: ")
                 target_mac = arp[0][int(net)]
                 target_ip = arp[1][target_mac]
