@@ -1,6 +1,6 @@
 # sniffer
 
-Sniffing, spoofing and other analyses in command line
+Sniffing, spoofing and other analyses
 
 
 ## Usage:
