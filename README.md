@@ -10,5 +10,5 @@ Install the requirements
 
 Run using
 ```
-python scan.py
+python run.py
 ```
