@@ -8,11 +8,15 @@ class Analyzer:
     @staticmethod
     def sniff(target_ip: str = None, target_mac = None) -> None:
         def packet_handler(packet):
-            if packet.haslayer(sc.Ether) and packet.haslayer(sc.IP):
-                if packet[sc.Ether].src == target_mac or packet[sc.Ether].dst == target_mac:
-                    print(packet.summary())
-                else:
-                    print(packet.summary())
+            if target_ip is None:
+                print(packet.summary())
+            elif packet.src == target_mac or packet.dst == target_mac:
+                print(packet.summary())
+#             if packet.haslayer(sc.Ether) and packet.haslayer(sc.IP):
+#                 if packet[sc.Ether].src == target_mac or packet[sc.Ether].dst == target_mac:
+#                     print(packet.summary())
+#                 else:
+#                     print(packet.summary())
         try:
             if target_ip is not None:
                 sc.sniff(filter=f"host {target_ip}", prn=packet_handler)
@@ -23,7 +27,7 @@ class Analyzer:
             exit()
 
     @staticmethod
-    def speed(plot: bool = False, nb_iter: int = 100) -> None:
+    def speed(target_ip: str = None, target_mac = None, plot: bool = False, nb_iter: int = 100) -> None:
         import numpy as np
         def _speed() -> float:
             tot_bytes: List[int] = []

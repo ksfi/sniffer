@@ -36,7 +36,8 @@ if net.lower() != 'all':
     target_mac = arp[0][int(net)]
     target_ip = arp[1][target_mac]
     print(f"sniffing {target_ip} {target_mac}...")
+    Analyzer.sniff(target_ip, target_mac)
 else:
     print(f"sniffing all...")
+    Analyzer.sniff()
 
-Analyzer.sniff()
