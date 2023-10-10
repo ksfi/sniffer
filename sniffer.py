@@ -112,6 +112,7 @@ class Analyzer:
 
     @staticmethod
     def spoof(target_ip: str) -> None:
+        # adapted from https://www.geeksforgeeks.org/python-how-to-create-an-arp-spoofer-using-scapy/ to complete
         import subprocess
         def get_mac(ip) -> str: 
             arp_request = sc.ARP(pdst = ip) 

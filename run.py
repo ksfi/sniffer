@@ -28,25 +28,36 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
         k+=1
     return ret_mac, ret_arp
 
-arp = scan()
-print("--------------\n--------------")
+def run():
+    arp = scan()
+    print("--------------\n--------------")
+    while (1):
+        mode: str = input("1- Sniffing 2- Spoofing 3- Data transfers 4- Domains\n")
+        try:
+            if int(mode) == 1:
+                net: str = input("Choose what to sniff: (type 'all' to sniff all) ")
+                if net.lower() != 'all':
+                    target_mac = arp[0][int(net)]
+                    target_ip = arp[1][target_mac]
+                    print(f"Sniffing {target_ip} {target_mac}...")
+                    Analyzer.sniff(target_ip, target_mac)
+                else:
+                    print(f"Sniffing all...")
+                    Analyzer.sniff()
+            if int(mode) == 2:
+                net: str = input("Choose what to spoof: ")
+                target_mac = arp[0][int(net)]
+                target_ip = arp[1][target_mac]
+                Analyzer.spoof(target_ip)
+                exit()
+            if int(mode) == 3:
+                Analyzer.speed(plot=True)
+                exit()
+            if int(mode) == 4:
+                Analyzer.domains(plot=True)
+                exit()
+        except:
+            print("Wrong entry")
 
-mode: str = input("1- sniffing 2- spoofing ")
-if int(mode) == 1:
-    net: str = input("choose what to sniff: (type 'all' to sniff all) ")
-    if net.lower() != 'all':
-        target_mac = arp[0][int(net)]
-        target_ip = arp[1][target_mac]
-        print(f"sniffing {target_ip} {target_mac}...")
-        Analyzer.sniff(target_ip, target_mac)
-    else:
-        print(f"sniffing all...")
-        Analyzer.sniff()
-if int(mode) == 2:
-    net: str = input("choose what to spoof: ")
-    target_mac = arp[0][int(net)]
-    target_ip = arp[1][target_mac]
-    Analyzer.spoof(target_ip)
-else:
-    print("wrong entry")
-
+if __name__ == "__main__":
+    run()
