@@ -57,6 +57,7 @@ class Analyzer:
                 k += 1
             if plot:
                 plt.savefig("speed_vs_time.pdf")
+                print("file saved at ./speed_vs_time.pdf")
                 plt.show()
         run()
 
@@ -106,7 +107,9 @@ class Analyzer:
                 plt.xlabel("Access Count")
                 plt.ylabel("Domain")
                 plt.title("Most Frequent Domains")
+                plt.savefig("domains.pdf")
                 plt.show()
+                print("file saved at ./domains.pdf")
 
         run()
 
