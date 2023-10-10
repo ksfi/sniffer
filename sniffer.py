@@ -113,7 +113,7 @@ class Analyzer:
     @staticmethod
     def spoof(target_ip: str) -> None:
         import subprocess
-        def get_mac(ip): 
+        def get_mac(ip) -> str: 
             arp_request = sc.ARP(pdst = ip) 
             broadcast = sc.Ether(dst ="ff:ff:ff:ff:ff:ff") 
             arp_request_broadcast = broadcast / arp_request 
@@ -126,17 +126,16 @@ class Analyzer:
             sc.send(packet, verbose = False) 
           
           
-        def restore(destination_ip, source_ip): 
+        def restore(destination_ip, source_ip) -> None: 
             destination_mac = get_mac(destination_ip) 
             source_mac = get_mac(source_ip) 
             packet = sc.ARP(op = 2, pdst = destination_ip, hwdst = destination_mac, psrc = source_ip, hwsrc = source_mac) 
             sc.send(packet, verbose = False) 
 
-        def get_gateway_ip():
+        def get_gateway_ip() -> str:
             try:
                 result = subprocess.check_output(['route', '-n', 'get', 'default']).decode('utf-8')
 
-                # Parse the result to extract the gateway IP address
                 lines = result.split('\n')
                 for line in lines:
                     if 'gateway:' in line:
