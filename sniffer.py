@@ -135,13 +135,5 @@ class Analyzer:
                 plt.show()
         run()
 
-def play():
-    def analyze_packet(packet):
-        print(packet)
-        if sc.Dot3 in packet:
-            print(packet.payload)
-            exit()
-    sc.sniff(prn=analyze_packet)
-
 if __name__ == "__main__":
-    play()
+    pass
