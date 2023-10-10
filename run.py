@@ -31,13 +31,22 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
 arp = scan()
 print("--------------\n--------------")
 
-net: str = input("choose what to sniff: (type 'all' to sniff all) ")
-if net.lower() != 'all':
+mode: str = input("1- sniffing 2- spoofing ")
+if int(mode) == 1:
+    net: str = input("choose what to sniff: (type 'all' to sniff all) ")
+    if net.lower() != 'all':
+        target_mac = arp[0][int(net)]
+        target_ip = arp[1][target_mac]
+        print(f"sniffing {target_ip} {target_mac}...")
+        Analyzer.sniff(target_ip, target_mac)
+    else:
+        print(f"sniffing all...")
+        Analyzer.sniff()
+if int(mode) == 2:
+    net: str = input("choose what to spoof: ")
     target_mac = arp[0][int(net)]
     target_ip = arp[1][target_mac]
-    print(f"sniffing {target_ip} {target_mac}...")
-    Analyzer.sniff(target_ip, target_mac)
+    Analyzer.spoof(target_ip)
 else:
-    print(f"sniffing all...")
-    Analyzer.sniff()
+    print("wrong entry")
 
