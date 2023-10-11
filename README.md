@@ -1,9 +1,8 @@
 # sniffer
 
-Sniffing, spoofing and other analyses in command line
+Sniffing, spoofing and other stuff
 
 
-## Usage:
 
 Clone
 ```
