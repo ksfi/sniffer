@@ -194,5 +194,20 @@ class Analyzer:
                 plt.show()
         run()
 
+    @staticmethod
+    def traceroute(destination: str, max_hops:int = 30) -> None:
+        for ttl in range(1, max_hops + 1):
+            packet = sc.IP(dst=destination, ttl=ttl) / sc.ICMP()
+            reply = sc.sr1(packet, verbose=0, timeout=2)
+            if reply is None:
+                print(f"{ttl}: *")
+            else:
+                ip_address = reply.src
+                print(f"{ttl}: {ip_address}")
+                if ip_address == destination:
+                    break
+
+
+
 if __name__ == "__main__":
-    Analyzer.domains(plot=True, nb_iter=10)
+    Analyzer.traceroute()
