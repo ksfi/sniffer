@@ -3,7 +3,6 @@
 Sniffing, spoofing and other stuff
 
 
-## Usage:
 
 Clone
 ```
