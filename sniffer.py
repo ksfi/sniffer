@@ -205,7 +205,7 @@ class Analyzer:
                     print(f"{ttl}: *")
                 else:
                     ip_address: str = reply.src
-                    ipsj.append(ip_address)
+                    ips.append(ip_address)
                     print(f"{ttl}: {ip_address}")
                     if ip_address == destination:
                         break
