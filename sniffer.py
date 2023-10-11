@@ -110,7 +110,7 @@ class Analyzer:
                 if ret:
                     return domains
 
-        run()
+        return run()
 
     @staticmethod
     def spoof(target_ip: str) -> None:
@@ -195,25 +195,8 @@ class Analyzer:
                 plt.show()
         run()
 
-    @staticmethod
-    def traceroute() -> None:
-        # replace with scapy less one
-        def _traceroute(destination: str, max_hops:int = 30) -> List[str]:
-            ips: List[str] = []
-            for ttl in range(1, max_hops + 1):
-                packet: Any = sc.IP(dst=destination, ttl=ttl) / sc.ICMP()
-                reply: Any = sc.sr1(packet, verbose=0, timeout=2)
-                if reply is None:
-                    print(f"{ttl}: *")
-                else:
-                    ip_address: str = reply.src
-                    ips.append(ip_address)
-                    print(f"{ttl}: {ip_address}")
-                    if ip_address == destination:
-                        break
-            return ips
-
-
-
 if __name__ == "__main__":
-    Analyzer.domains(plot=True)
+    target = ["192.168.1.254"]
+    ips = Analyzer.domains(plot=True, ret=True)
+    for ip in list(ips):
+        result, unans = sc.traceroute([ip],maxttl=32)
