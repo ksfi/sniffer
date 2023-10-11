@@ -80,8 +80,6 @@ class Analyzer:
             sc.sniff(filter="ip", prn=analyze_packet, count=50)
             top_n: int = 10
             most_frequent_domains: List[Tuple[str, int]] = frequent_domains.most_common()
- #            for domain, count in most_frequent_domains:
- #                print(f"{domain}: {count} times")
             return frequent_domains
 
         def run() -> None:
@@ -96,13 +94,12 @@ class Analyzer:
                 top_n: int = 10
                 most_frequent_domains: List[Tuple[str, int]] = collected_data.most_common(top_n)
                 domains, counts = zip(*most_frequent_domains)
-#                 for i in range(len(domains)):
-#                     try:
-#                         hostname, _, _ = socket.gethostbyaddr(domains[i])
-#                         domains[i] = hostname
-#                     except:
-#                         pass
-
+                for i in range(len(domains)):
+                    try:
+                        hostname, _, _ = socket.gethostbyaddr(domains[i])
+                        domains[i] = hostname
+                    except:
+                        pass
                 plt.barh(domains, counts)
                 plt.xlabel("Access Count")
                 plt.ylabel("Domain")
@@ -198,4 +195,4 @@ class Analyzer:
         run()
 
 if __name__ == "__main__":
-    Analyzer.speed(plot=True, nb_iter=1000)
+    Analyzer.domains(plot=True, nb_iter=10)
