@@ -2,7 +2,7 @@ import time
 import scapy.all as sc
 import matplotlib.pyplot as plt
 
-from typing import IO, List, Tuple, Any
+from typing import IO, List, Tuple, Any, Optional
 
 class Analyzer:
     @staticmethod
@@ -62,7 +62,7 @@ class Analyzer:
         run()
 
     @staticmethod
-    def domains(plot: bool = False, nb_iter: int = 10) -> None:
+    def domains(plot: bool = False, nb_iter: int = 300, ret: bool = False) -> Optional[List[str]]:
         import socket
         from collections import Counter
         from tqdm import tqdm
@@ -77,7 +77,7 @@ class Analyzer:
                         frequent_domains[domain] += 1
 
             frequent_domains: Counter = Counter()
-            sc.sniff(filter="ip", prn=analyze_packet, count=50)
+            sc.sniff(filter="ip", prn=analyze_packet, count=1)
             top_n: int = 10
             most_frequent_domains: List[Tuple[str, int]] = frequent_domains.most_common()
             return frequent_domains
@@ -107,6 +107,8 @@ class Analyzer:
                 plt.savefig("domains.pdf")
                 plt.show()
                 print("file saved at ./domains.pdf")
+                if ret:
+                    return domains
 
         run()
 
@@ -146,7 +148,6 @@ class Analyzer:
                     print("Gateway IP not found in the command output.")
             except subprocess.CalledProcessError as e:
                 print("Error executing the command:", e)
-
 
         gateway_ip = get_gateway_ip()
         print(gateway_ip)

@@ -29,6 +29,27 @@ def scan() -> Tuple[List[str], Dict[str, str]]:
     return ret_mac, ret_arp
 
 def run():
+#     TODO: argparse
+#     parser = argparse.ArgumentParser(description="Network Monitoring Script")
+# 
+#     parser.add_argument("--sniff", action="store_true", help="Sniff network traffic")
+#     parser.add_argument("--spoof", action="store_true", help="Spoof network")
+#     parser.add_argument("--data-transfers", action="store_true", help="Analyze data transfers")
+#     parser.add_argument("--domains", action="store_true", help="Analyze domains")
+# 
+#     args = parser.parse_args()
+# 
+#     if args.sniff:
+#         pass
+#     elif args.spoof:
+#         pass
+#     elif args.data_transfers:
+#         pass
+#     elif args.domains:
+#         pass
+#     else:
+#         pass
+
     while (1):
         print("\nWatching the network...")
         arp = scan()
