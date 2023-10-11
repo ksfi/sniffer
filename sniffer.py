@@ -195,17 +195,21 @@ class Analyzer:
         run()
 
     @staticmethod
-    def traceroute(destination: str, max_hops:int = 30) -> None:
-        for ttl in range(1, max_hops + 1):
-            packet: Any = sc.IP(dst=destination, ttl=ttl) / sc.ICMP()
-            reply: Any = sc.sr1(packet, verbose=0, timeout=2)
-            if reply is None:
-                print(f"{ttl}: *")
-            else:
-                ip_address: str = reply.src
-                print(f"{ttl}: {ip_address}")
-                if ip_address == destination:
-                    break
+    def traceroute() -> None:
+        def _traceroute(destination: str, max_hops:int = 30) -> List[str]:
+            ips: List[str] = []
+            for ttl in range(1, max_hops + 1):
+                packet: Any = sc.IP(dst=destination, ttl=ttl) / sc.ICMP()
+                reply: Any = sc.sr1(packet, verbose=0, timeout=2)
+                if reply is None:
+                    print(f"{ttl}: *")
+                else:
+                    ip_address: str = reply.src
+                    ipsj.append(ip_address)
+                    print(f"{ttl}: {ip_address}")
+                    if ip_address == destination:
+                        break
+            return ips
 
 
 
