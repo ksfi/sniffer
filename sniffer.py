@@ -2,7 +2,7 @@ import time
 import scapy.all as sc
 import matplotlib.pyplot as plt
 
-from typing import IO, List, Tuple
+from typing import IO, List, Tuple, Any
 
 class Analyzer:
     @staticmethod
@@ -197,12 +197,12 @@ class Analyzer:
     @staticmethod
     def traceroute(destination: str, max_hops:int = 30) -> None:
         for ttl in range(1, max_hops + 1):
-            packet = sc.IP(dst=destination, ttl=ttl) / sc.ICMP()
-            reply = sc.sr1(packet, verbose=0, timeout=2)
+            packet: Any = sc.IP(dst=destination, ttl=ttl) / sc.ICMP()
+            reply: Any = sc.sr1(packet, verbose=0, timeout=2)
             if reply is None:
                 print(f"{ttl}: *")
             else:
-                ip_address = reply.src
+                ip_address: str = reply.src
                 print(f"{ttl}: {ip_address}")
                 if ip_address == destination:
                     break
