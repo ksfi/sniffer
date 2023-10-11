@@ -197,6 +197,7 @@ class Analyzer:
 
     @staticmethod
     def traceroute() -> None:
+        # replace with scapy less one
         def _traceroute(destination: str, max_hops:int = 30) -> List[str]:
             ips: List[str] = []
             for ttl in range(1, max_hops + 1):
@@ -215,4 +216,4 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    pass
+    Analyzer.domains(plot=True)
