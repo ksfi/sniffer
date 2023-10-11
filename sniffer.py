@@ -214,4 +214,4 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    Analyzer.traceroute()
+    pass
