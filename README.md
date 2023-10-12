@@ -1,6 +1,6 @@
 # sniffer
 
-Sniffing, spoofing and other stuff
+Packet analyzer
 
 
 
@@ -9,7 +9,7 @@ Clone
 git clone https://github.com/ksfi/sniffer.git
 ```
 
-Install the requirements
+Requirements
 ```
 pip install -r requirements.txt
 ```
