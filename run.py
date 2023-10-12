@@ -2,21 +2,20 @@ import manuf
 from sniffer import Analyzer
 from scapy.all import ARP, Ether, srp
 
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Set
 
 def scan() -> Tuple[List[str], Dict[str, str]]:
     target_ip: str = "192.168.1.0/24"
+    devices: List[Dict[str, str]] = []
     arp = ARP(pdst=target_ip)
     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
     packet = ether / arp
     result = srp(packet, timeout=3, verbose=0)[0]
-    devices = []
-
     for sent, received in result:
         devices.append({'ip': received.psrc, 'mac': received.hwsrc})
+
     print("\n\tIP Address\t\t\tMAC Address\t\tInfo")
     print("----------------------------------------------------------------------------")
-
     vendor = manuf.MacParser()
     ret_mac: List[str] = []
     ret_arp: Dict[str, str] = dict()
