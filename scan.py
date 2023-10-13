@@ -1,8 +1,7 @@
 import manuf
-from sniffer import Analyzer
 from scapy.all import ARP, Ether, srp
 
-from typing import Dict, Tuple, List, Set
+from typing import Dict, Tuple, List
 
 class Scan:
     @staticmethod

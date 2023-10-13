@@ -30,7 +30,7 @@ def run():
         if devices == 0:
             print("No activity detected on the network")
         print("--------------\n--------------")
-        mode: str = input("\n1- Sniffing 2- Spoofing 3- Data transfers 4- Domains r- Refresh\n--> ")
+        mode: str = input("\n1- Sniffing 2- Spoofing 3- Data transfers 4- Domains 5- ARP cache r- Refresh\n--> ")
         try:
             if int(mode) == 1:
                 if devices > 0:
@@ -60,6 +60,8 @@ def run():
             if int(mode) == 4:
                 Analyzer.domains(plot=True)
                 exit()
+            if int(mode) == 5:
+                Scan.arp_cache()
         except:
             if mode == 'r':
                 print("Refreshing...")
