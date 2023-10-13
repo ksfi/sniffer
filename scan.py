@@ -1,5 +1,4 @@
 import manuf
-from IPy import IP
 from scapy.all import ARP, Ether, srp
 
 from typing import Dict, Tuple, List
