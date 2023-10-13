@@ -6,12 +6,18 @@ from typing import IO, List, Tuple, Any, Optional
 
 class Analyzer:
     @staticmethod
-    def sniff(target_ip: str = None, target_mac = None) -> None:
+    def sniff(target_ip: str = None, target_mac = None, ret_log: bool = True) -> None:
+        if ret_log:
+            log: IO[str] = open("log_sniff.txt", "w")
         def packet_handler(packet):
             if target_ip is None and target_mac is None:
                 print(packet.summary())
+                if ret_log:
+                    log.write(f"{packet.summary()}\n----\n")
             elif packet.src == target_mac or packet.dst == target_mac:
                 print(packet.summary())
+                if ret_log:
+                    log.write(f"{packet.summary()}\n----\n")
         try:
             if target_ip is not None:
                 sc.sniff(filter=f"host {target_ip}", prn=packet_handler)
