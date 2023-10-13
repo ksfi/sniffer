@@ -5,7 +5,7 @@ from typing import Dict, Tuple, List
 
 class Scan:
     @staticmethod
-    def arp_dynamic() -> Tuple[List[str], Dict[str, str]]:
+    def scan() -> Tuple[List[str], Dict[str, str]]:
         target_ip: str = "192.168.1.0/24"
         devices: List[Dict[str, str]] = []
         arp = ARP(pdst=target_ip)

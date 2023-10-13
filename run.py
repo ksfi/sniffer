@@ -25,7 +25,7 @@ def run():
 
     while (1):
         print("\nWatching the network...")
-        arp = Scan.arp_dynamic()
+        arp = Scan.scan()
         devices: int = len(arp[0])
         if devices == 0:
             print("No activity detected on the network")
