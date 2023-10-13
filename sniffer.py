@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 from typing import IO, List, Tuple, Any, Optional
 
+# TODO plotting with this https://bokeh.org/ looks better
+
 class Analyzer:
     @staticmethod
     def sniff(target_ip: str = None, target_mac = None, ret_log: bool = True) -> None:

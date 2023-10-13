@@ -10,3 +10,4 @@ domains.pdf
 .run.py.swo
 log_sniff.txt
 __pycache__/scan.cpython-311.pyc
+.sniffer.py.swn
