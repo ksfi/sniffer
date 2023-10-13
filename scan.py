@@ -30,9 +30,12 @@ class Scan:
         return ret_mac, ret_arp
 
     @staticmethod
-    def arp_cache():
+    def arp_cache() -> None:
         import subprocess
-        result = subprocess.check_output("arp -a", shell=True, text=True)
-        arp_cache = result.strip().split('\n')
+        result: str = subprocess.check_output("arp -a", shell=True, text=True)
+        arp_cache: List[str] = result.strip().split('\n')
         for entry in arp_cache:
             print(entry)
+
+if __name__ == "__main__":
+    Scan.arp_cache()
