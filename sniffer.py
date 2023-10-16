@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from typing import IO, List, Tuple, Any, Optional
 
-# TODO plotting with this https://bokeh.org/ looks better
+# TODO plot with this https://bokeh.org/
 
 class Analyzer:
     @staticmethod
@@ -77,9 +77,9 @@ class Analyzer:
         def _domains() -> Counter:
             def analyze_packet(packet) -> None:
                 if packet.haslayer('IP'):
-                    ip_src = packet['IP'].src
-                    ip_dst = packet['IP'].dst
-                    domain = ip_dst if '.' in ip_dst else None
+                    ip_src: str = packet['IP'].src
+                    ip_dst: str = packet['IP'].dst
+                    domain: str = ip_dst if '.' in ip_dst else None
 
                     if domain:
                         frequent_domains[domain] += 1
