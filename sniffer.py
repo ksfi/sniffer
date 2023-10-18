@@ -213,10 +213,6 @@ class Analyzer:
                     http_lines = http_data.split("\r\n\r\n")
                     if http_lines and 'HTTP' in http_lines[0]:
                         http_header, http_body = http_lines[0].split("\r\n", 1)
-                        headers = {}
-                        for line in http_header.split("\r\n")[1:]:
-                            key, value = line.split(":", 1)
-                            headers[key.strip()] = value.strip()
                         print(f"HTTP Request/Response: {http_header.split()[0]}\n---")
                         print(f"HTTP Headers\n{http_header}\n---")
                         print(f"HTTP Body\n{http_body}\n------------")
