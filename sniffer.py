@@ -216,8 +216,8 @@ class Analyzer:
                         print(f"HTTP Request/Response: {http_header.split()[0]}\n---")
                         print(f"HTTP Headers\n{http_header}\n---")
                         print(f"HTTP Body\n{http_body}\n------------")
-                    except:
-                        pass
+                except:
+                    pass
 
         def decode_dns(packet) -> None:
             if packet.haslayer(sc.DNS):
