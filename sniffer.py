@@ -205,7 +205,9 @@ class Analyzer:
         run()
 
     @staticmethod
-    def decode() -> None:
+    def decode(log: bool = False) -> None:
+        if log:
+            log_file: IO[str] = open("log_decode.txt", "w")
         def decode_http(packet) -> None:
             if packet.haslayer(sc.Raw):
                 try:
@@ -216,6 +218,8 @@ class Analyzer:
                         print(f"HTTP Request/Response: {http_header.split()[0]}\n---")
                         print(f"HTTP Headers\n{http_header}\n---")
                         print(f"HTTP Body\n{http_body}\n------------")
+                        if log:
+                            log_file.write(f"HTTP Request/Response: {http_header.split()[0]}\n---\nHTTP Headers\n{http_header}\n---\nHTTP Body\n{http_body}\n------------\n")
                 except:
                     pass
 
@@ -224,6 +228,8 @@ class Analyzer:
                 try:
                     dns_query = packet[sc.DNS].qd.qname.decode('utf-8', 'ignore')
                     print(f"DNS Query: {dns_query}\n------------")
+                    if log:
+                        log_file.write(f"DNS Query: {dns_query}\n------------\n")
                 except:
                     pass
 
@@ -235,4 +241,4 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    Analyzer.decode()
+    Analyzer.decode(log=True)

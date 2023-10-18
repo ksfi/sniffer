@@ -11,3 +11,4 @@ domains.pdf
 log_sniff.txt
 __pycache__/scan.cpython-311.pyc
 .sniffer.py.swn
+log_decode.txt
