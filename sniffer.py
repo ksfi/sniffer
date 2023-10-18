@@ -227,11 +227,11 @@ class Analyzer:
                 except:
                     pass
 
-        def packet_handler(packet):
+        def analyze_packet(packet):
             decode_dns(packet)
             decode_http(packet)
 
-        sc.sniff(filter="tcp or udp", prn=packet_handler)
+        sc.sniff(filter="tcp or udp", prn=analyze_packet)
 
 
 if __name__ == "__main__":
