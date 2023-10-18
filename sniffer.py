@@ -171,6 +171,7 @@ class Analyzer:
                 sent_packets_count = sent_packets_count + 2
                 print("\r[*] Packets Sent "+str(sent_packets_count), end ="") 
                 time.sleep(2)
+
           
         except KeyboardInterrupt: 
             print("\nCtrl + C pressed.............Exiting") 
@@ -203,8 +204,39 @@ class Analyzer:
                 plt.show()
         run()
 
+    @staticmethod
+    def decode() -> None:
+        def decode_http(packet) -> None:
+            if packet.haslayer(sc.Raw):
+                try:
+                    http_data = packet[sc.Raw].load.decode('utf-8', 'ignore')
+                    http_lines = http_data.split("\r\n\r\n")
+                    if http_lines and 'HTTP' in http_lines[0]:
+                        http_header, http_body = http_lines[0].split("\r\n", 1)
+                        headers = {}
+                        for line in http_header.split("\r\n")[1:]:
+                            key, value = line.split(":", 1)
+                            headers[key.strip()] = value.strip()
+                        print(f"HTTP Request/Response: {http_header.split()[0]}\n---")
+                        print(f"HTTP Headers\n{http_header}\n---")
+                        print(f"HTTP Body\n{http_body}\n------------")
+                    except:
+                        pass
+
+        def decode_dns(packet) -> None:
+            if packet.haslayer(sc.DNS):
+                try:
+                    dns_query = packet[sc.DNS].qd.qname.decode('utf-8', 'ignore')
+                    print(f"DNS Query: {dns_query}\n------------")
+                except:
+                    pass
+
+        def packet_handler(packet):
+            decode_dns(packet)
+            decode_http(packet)
+
+        sc.sniff(filter="tcp or udp", prn=packet_handler)
+
+
 if __name__ == "__main__":
-    target = ["192.168.1.254"]
-    ips = Analyzer.domains(plot=True, ret=True)
-    for ip in list(ips):
-        result, unans = sc.traceroute([ip],maxttl=32)
+    Analyzer.decode()
