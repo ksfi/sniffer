@@ -222,20 +222,67 @@ class Analyzer:
                             log_file.write(f"HTTP Request/Response: {http_header.split()[0]}\n---\nHTTP Headers\n{http_header}\n---\nHTTP Body\n{http_body}\n------------\n")
                 except:
                     pass
+        
+        def decode_dns(packet):
+            try:
+                if packet.haslayer(sc.DNS):
+                    dns_data = packet[sc.DNS]
+                    print("DNS Packet:")
+                    print(f"Source IP: {packet[sc.IP].src}")
+                    print(f"Destination IP: {packet[sc.IP].dst}")
 
-        def decode_dns(packet) -> None:
-            if packet.haslayer(sc.DNS):
-                try:
-                    dns_query = packet[sc.DNS].qd.qname.decode('utf-8', 'ignore')
-                    print(f"DNS Query: {dns_query}\n------------")
-                    if log:
-                        log_file.write(f"DNS Query: {dns_query}\n------------\n")
-                except:
-                    pass
+                    if dns_data.qd:
+                        print("DNS Questions:")
+                        for question in dns_data.qd:
+                            qname = question.qname.decode('utf-8', 'ignore')
+                            qtype = question.qtype
+                            qclass = question.qclass
+                            print(f"  - Name: {qname}")
+                            print(f"    Type: {qtype}  Class: {qclass}")
+
+                    if dns_data.an:
+                        print("DNS Answers:")
+                        for answer in dns_data.an:
+                            name = answer.rrname.decode('utf-8', 'ignore')
+                            rtype = answer.type
+                            rclass = answer.rclass
+                            rdata = answer.rdata.decode('utf-8', 'ignore')
+                            print(f"  - Name: {name}")
+                            print(f"    Type: {rtype}  Class: {rclass}")
+                            print(f"    Data: {rdata}")
+
+                    if dns_data.ns:
+                        print("DNS Authoritative Servers:")
+                        for ns in dns_data.ns:
+                            nsname = ns.rrname.decode('utf-8', 'ignore')
+                            nstype = ns.type
+                            nsclass = ns.rclass
+                            nsdata = ns.rdata.decode('utf-8', 'ignore')
+                            print(f"  - Name: {nsname}")
+                            print(f"    Type: {nstype}  Class: {nsclass}")
+                            print(f"    Data: {nsdata}")
+
+                    qr_flag = dns_data.qr
+                    aa_flag = dns_data.aa
+                    tc_flag = dns_data.tc
+                    rd_flag = dns_data.rd
+                    ra_flag = dns_data.ra
+                    ad_flag = dns_data.ad
+                    cd_flag = dns_data.cd
+                    print("DNS Response Flags:")
+                    print(f"QR (Query/Response): {qr_flag}")
+                    print(f"AA (Authoritative Answer): {aa_flag}")
+                    print(f"TC (Truncated): {tc_flag}")
+                    print(f"RD (Recursion Desired): {rd_flag}")
+                    print(f"RA (Recursion Available): {ra_flag}")
+                    print(f"AD (Authenticated Data): {ad_flag}")
+                    print(f"CD (Checking Disabled): {cd_flag}")
+            except:
+                pass
 
         def analyze_packet(packet):
-            decode_dns(packet)
-            decode_http(packet)
+                decode_dns(packet)
+                decode_http(packet)
 
         sc.sniff(filter="tcp or udp", prn=analyze_packet)
 
