@@ -26,6 +26,7 @@ def run():
     while (1):
         print("\nWatching the network...")
         arp = Scan.scan()
+        # TODO switch to arp_cache
         devices: int = len(arp[0])
         if devices == 0:
             print("No activity detected on the network")
