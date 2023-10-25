@@ -19,4 +19,4 @@ Run
 python run.py
 ```
 
-Adding spoofing 
+Adding spoofing, tests 
