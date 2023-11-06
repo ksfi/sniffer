@@ -6,7 +6,7 @@ from typing import IO, List, Tuple, Any, Optional
 
 # TODO plot with this https://bokeh.org/
 
-class Analyzer:
+class _Analyzer:
     @staticmethod
     def sniff(target_ip: str = None, target_mac = None, ret_log: bool = True) -> None:
         if ret_log:
@@ -285,6 +285,7 @@ class Analyzer:
                 decode_http(packet)
 
         sc.sniff(filter="tcp or udp", prn=analyze_packet)
+Analyzer = _Analyzer
 
 
 if __name__ == "__main__":
