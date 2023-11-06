@@ -11,7 +11,7 @@ class _Analyzer:
     def sniff(target_ip: str = None, target_mac = None, ret_log: bool = True) -> None:
         if ret_log:
             log: IO[str] = open("log_sniff.txt", "w")
-        def packet_handler(packet):
+        def packet_handler(packet: sc.packet.Packet):
             if target_ip is None and target_mac is None:
                 print(packet.summary())
                 if ret_log:
@@ -35,7 +35,7 @@ class _Analyzer:
         def _speed() -> float:
             tot_bytes: List[int] = []
             start: float = time.time()
-            def analyze_packet(packet) -> None:
+            def analyze_packet(packet: sc.packet.Packet) -> None:
                 tot_bytes.append(len(packet))
             sc.sniff(count=5, prn=analyze_packet)
             end: float = time.time()
@@ -75,7 +75,7 @@ class _Analyzer:
         from collections import Counter
         from tqdm import tqdm
         def _domains() -> Counter:
-            def analyze_packet(packet) -> None:
+            def analyze_packet(packet: sc.packet.Packet) -> None:
                 if packet.haslayer('IP'):
                     ip_src: str = packet['IP'].src
                     ip_dst: str = packet['IP'].dst
@@ -208,7 +208,7 @@ class _Analyzer:
     def decode(log: bool = False) -> None:
         if log:
             log_file: IO[str] = open("log_decode.txt", "w")
-        def decode_http(packet) -> None:
+        def decode_http(packet: sc.packet.Packet) -> None:
             if packet.haslayer(sc.Raw):
                 try:
                     http_data = packet[sc.Raw].load.decode('utf-8', 'ignore')
@@ -223,7 +223,7 @@ class _Analyzer:
                 except:
                     pass
         
-        def decode_dns(packet):
+        def decode_dns(packet: sc.packet.Packet):
             try:
                 if packet.haslayer(sc.DNS):
                     dns_data = packet[sc.DNS]
@@ -280,13 +280,13 @@ class _Analyzer:
             except:
                 pass
 
-        def analyze_packet(packet):
+        def analyze_packet(packet: sc.packet.Packet):
                 decode_dns(packet)
                 decode_http(packet)
 
         sc.sniff(filter="tcp or udp", prn=analyze_packet)
-Analyzer = _Analyzer
 
+Analyzer = _Analyzer
 
 if __name__ == "__main__":
     Analyzer.decode(log=True)
