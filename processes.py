@@ -13,7 +13,11 @@ def display(connected_processes: List[Tuple[Any,...]]):
 
 class _Processes:
   @staticmethod
-  def watch(_kind:str='tcp', _display:bool=False) -> List[Any]:
+  def watch(_kind:str='tcp', _display:bool=False) -> List[Tuple[str, str, List[Any]]]:
+    '''
+    returns a list of tuples [(process_name: str, process_id: str, connections: List[pconn]),...]
+    corresponding to current processes with a tcp (by default, can be modified) connection ongoing.
+    '''
     ret = []
     for process in psutil.process_iter(['pid', 'name']):
         try:
