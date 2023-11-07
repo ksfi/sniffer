@@ -2,7 +2,7 @@ import psutil
 
 from typing import Optional, List, Any, Tuple
 
-def display(connected_processes: Tuple[Any,...]):
+def display(connected_processes: List[Tuple[Any,...]]):
   for conn in connected_processes:
     print(f"Process Name: {conn[0]}, PID: {[conn[1]]}")
     print(f"Status {conn[2]}")
