@@ -1,8 +1,20 @@
 import psutil
 
+from typing import Optional, List, Any, Tuple
+
+def display(connected_processes: Tuple[Any,...]):
+  for conn in connected_processes:
+    print(f"Process Name: {conn[0]}, PID: {[conn[1]]}")
+    print(f"Status {conn[2]}")
+    for c in conn[3]:
+      try:
+        print(f"  -> IP: {c.laddr.ip}, Port: {c.laddr.port}")
+      except: pass
+
 class _Processes:
   @staticmethod
-  def watch(_kind:str='tcp'):
+  def watch(_kind:str='tcp', _display:bool=False) -> List[Any]:
+    ret = []
     for process in psutil.process_iter(['pid', 'name']):
         try:
             process_info = process.info
@@ -11,15 +23,14 @@ class _Processes:
             if process_name:
                 connections = psutil.Process(process_pid).connections(kind=_kind)
                 if len(connections) > 0:
-                  print(f"Process Name: {process_name}, PID: {process_pid}")
-                  print(f"Status {connections[0].status}")
-                  for conn in connections:
-                      if conn.laddr.ip and conn.laddr.port:
-                          print(f"  -> IP: {conn.laddr.ip}, Port: {conn.laddr.port}")
+                  ret.append((process_name, process_pid, connections[0].status, connections))
         except:
             pass
+    if _display:
+       display(ret)
+    return ret
 
 Processes = _Processes
 
 if __name__ == "__main__":
-   Processes.watch()
+  Processes.watch(_display=True)
