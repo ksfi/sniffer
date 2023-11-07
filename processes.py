@@ -2,6 +2,9 @@ import psutil
 
 from typing import Optional, List, Any, Tuple
 
+def list_network_interfaces() -> List[str]:
+  return [iface for iface, _ in psutil.net_if_addrs().items()]
+
 def display(connected_processes: List[Tuple[Any,...]]):
   for conn in connected_processes:
     print(f"Process Name: {conn[0]}, PID: {[conn[1]]}")
@@ -34,9 +37,6 @@ class _Processes:
     return ret
 
 Processes = _Processes
-
-def list_network_interfaces() -> List[str]:
-  return [iface for iface, _ in psutil.net_if_addrs().items()]
 
 if __name__ == "__main__":
 #   Processes.watch(_display=True)
