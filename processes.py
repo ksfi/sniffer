@@ -18,7 +18,7 @@ class _Processes:
     returns a list of tuples [(process_name: str, process_id: str, connections: List[pconn]),...]
     corresponding to current processes with a tcp (by default, can be modified) connection ongoing.
     '''
-    ret = []
+    ret: List[Tuple[str, str, List[Any]]] = []
     for process in psutil.process_iter(['pid', 'name']):
         try:
             process_info = process.info
@@ -35,5 +35,14 @@ class _Processes:
 
 Processes = _Processes
 
+def list_network_interfaces():
+    # Get a list of all network interfaces
+  network_interfaces = psutil.net_if_addrs()
+
+  for iface, addrs in network_interfaces.items():
+    print(f"Interface: {iface}")
+
 if __name__ == "__main__":
-  Processes.watch(_display=True)
+#   Processes.watch(_display=True)
+
+  list_network_interfaces()
