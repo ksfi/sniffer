@@ -35,14 +35,9 @@ class _Processes:
 
 Processes = _Processes
 
-def list_network_interfaces():
-    # Get a list of all network interfaces
-  network_interfaces = psutil.net_if_addrs()
-
-  for iface, addrs in network_interfaces.items():
-    print(f"Interface: {iface}")
+def list_network_interfaces() -> List[str]:
+  return [iface for iface, _ in psutil.net_if_addrs().items()]
 
 if __name__ == "__main__":
 #   Processes.watch(_display=True)
-
-  list_network_interfaces()
+  print(list_network_interfaces())
