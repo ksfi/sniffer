@@ -286,7 +286,19 @@ class _Analyzer:
 
         sc.sniff(filter="tcp or udp", prn=analyze_packet)
 
+    def most_used():
+        from collections import Counter
+        packet_counts = Counter()
+        tot_pack = 0
+        def packet_callback(packet):
+            iface = packet.sniffed_on
+            tot_pack += 1
+            packet_counts[iface] += 1
+        sc.sniff(prn=packet_callback)
+        most_used_iface = packet_counts.most_common(3)[0]
+        print(f"The most used interface is: {most_used_iface} {tot_pack}")
+
 Analyzer = _Analyzer
 
 if __name__ == "__main__":
-    Analyzer.decode(log=True)
+    Analyzer.most_used()

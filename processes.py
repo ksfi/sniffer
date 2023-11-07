@@ -3,6 +3,9 @@ import psutil
 from typing import Optional, List, Any, Tuple
 
 def list_network_interfaces() -> List[str]:
+  '''
+  returns List[str]: list of interfaces
+  '''
   return [iface for iface, _ in psutil.net_if_addrs().items()]
 
 def display(connected_processes: List[Tuple[Any,...]]):
@@ -13,12 +16,13 @@ def display(connected_processes: List[Tuple[Any,...]]):
       try:
         print(f"  -> IP: {c.laddr.ip}, Port: {c.laddr.port}")
       except: pass
+    print("---------------------------")
 
 class _Processes:
   @staticmethod
-  def watch(_kind:str='tcp', _display:bool=False) -> List[Tuple[str, str, List[Any]]]:
+  def watch( _kind:str='tcp', _display:bool=False) -> List[Tuple[str, str, List[Any]]]:
     '''
-    returns a list of tuples [(process_name: str, process_id: str, connections: List[pconn]),...]
+    returns a List[Tuple[str, str, List[Any]]] [(process_name: str, process_id: str, connections: List[pconn]),...]
     corresponding to current processes with a tcp (by default, can be modified) connection ongoing.
     '''
     ret: List[Tuple[str, str, List[Any]]] = []
@@ -39,5 +43,4 @@ class _Processes:
 Processes = _Processes
 
 if __name__ == "__main__":
-#   Processes.watch(_display=True)
-  print(list_network_interfaces())
+  Processes.watch(_display=True)
