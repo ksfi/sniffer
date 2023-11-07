@@ -24,8 +24,7 @@ class _Processes:
                 connections = psutil.Process(process_pid).connections(kind=_kind)
                 if len(connections) > 0:
                   ret.append((process_name, process_pid, connections[0].status, connections))
-        except:
-            pass
+        except: pass
     if _display:
        display(ret)
     return ret
