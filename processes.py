@@ -1,7 +1,7 @@
 import psutil
 import socket
 
-class Processes:
+class _Processes:
   @staticmethod
   def watch(_kind:str='tcp'):
     for process in psutil.process_iter(['pid', 'name']):
@@ -19,6 +19,8 @@ class Processes:
                           print(f"  -> IP: {conn.laddr.ip}, Port: {conn.laddr.port}")
         except:
             pass
+
+Processes = _Processes
 
 if __name__ == "__main__":
    Processes.watch()
