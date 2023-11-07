@@ -1,5 +1,4 @@
 import psutil
-import socket
 
 class _Processes:
   @staticmethod
