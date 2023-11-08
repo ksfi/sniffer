@@ -2,7 +2,7 @@ import psutil
 
 from typing import Optional, List, Any, Tuple
 
-def list_network_interfaces() -> List[str]:
+def network_interfaces() -> List[str]:
   '''
   returns List[str]: list of interfaces
   '''
@@ -20,7 +20,7 @@ def display(connected_processes: List[Tuple[Any,...]]):
 
 class _Processes:
   @staticmethod
-  def watch( _kind:str='tcp', _display:bool=False) -> List[Tuple[str, str, List[Any]]]:
+  def watch(_kind:str='tcp', _display:bool=False) -> List[Tuple[str, str, List[Any]]]:
     '''
     returns a List[Tuple[str, str, List[Any]]] [(process_name: str, process_id: str, connections: List[pconn]),...]
     corresponding to current processes with a tcp (by default, can be modified) connection ongoing.
@@ -41,6 +41,7 @@ class _Processes:
     return ret
 
 Processes = _Processes
+
 
 if __name__ == "__main__":
   Processes.watch(_display=True)
