@@ -1,14 +1,14 @@
-import psutil
+import scapy.all as sc
 
-from typing import Optional, List, Any, Tuple
+from typing import Optional, List, Any, Tuple, Dict
 
 def network_interfaces() -> List[str]:
   '''
   returns List[str]: list of interfaces
   '''
-  return [iface for iface, _ in psutil.net_if_addrs().items()]
+  return sc.get_if_list()
 
-def display(connected_processes: List[Tuple[Any,...]]):
+def display(connected_processes: List[Tuple[str, str, List[Any]]]) -> None:
   for conn in connected_processes:
     print(f"Process Name: {conn[0]}, PID: {[conn[1]]}")
     print(f"Status {conn[2]}")
@@ -42,6 +42,5 @@ class _Processes:
 
 Processes = _Processes
 
-
 if __name__ == "__main__":
-  Processes.watch(_display=True)
+  print(network_interfaces())
