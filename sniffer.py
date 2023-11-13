@@ -7,7 +7,6 @@ from typing import IO, List, Tuple, Any, Optional
 # TODO plot with this https://bokeh.org/
 
 class _Analyzer:
-    @staticmethod
     def sniff(target_ip: str = None, target_mac = None, ret_log: bool = True) -> None:
         if ret_log:
             log: IO[str] = open("log_sniff.txt", "w")
@@ -29,7 +28,6 @@ class _Analyzer:
             print("quit sniffing")
             exit()
 
-    @staticmethod
     def speed(target_ip: str = None, target_mac = None, plot: bool = False, nb_iter: int = 100) -> None:
         import numpy as np
         def _speed() -> float:
@@ -69,7 +67,6 @@ class _Analyzer:
                 plt.show()
         run()
 
-    @staticmethod
     def domains(plot: bool = False, nb_iter: int = 300, ret: bool = False) -> Optional[List[str]]:
         import socket
         from collections import Counter
@@ -120,7 +117,6 @@ class _Analyzer:
 
         return run()
 
-    @staticmethod
     def spoof(target_ip: str) -> None:
         # adapted from https://www.geeksforgeeks.org/python-how-to-create-an-arp-spoofer-using-scapy/ to complete
         import subprocess
@@ -179,7 +175,6 @@ class _Analyzer:
             restore(target_ip, gateway_ip) 
             print("[+] Arp Spoof Stopped") 
 
-    @staticmethod
     def bandwith(plot: bool = False) -> None:
         time_intervals = [] 
         bandwidth_usage = []
@@ -204,7 +199,6 @@ class _Analyzer:
                 plt.show()
         run()
 
-    @staticmethod
     def decode(log: bool = False) -> None:
         if log:
             log_file: IO[str] = open("log_decode.txt", "w")

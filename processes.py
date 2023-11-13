@@ -1,4 +1,5 @@
 import scapy.all as sc
+import psutil
 
 from typing import Optional, List, Any, Tuple, Dict
 
@@ -19,7 +20,6 @@ def display(connected_processes: List[Tuple[str, str, List[Any]]]) -> None:
     print("---------------------------")
 
 class _Processes:
-  @staticmethod
   def watch(_kind:str='tcp', _display:bool=False) -> List[Tuple[str, str, List[Any]]]:
     '''
     returns a List[Tuple[str, str, List[Any]]] [(process_name: str, process_id: str, connections: List[pconn]),...]
@@ -42,5 +42,34 @@ class _Processes:
 
 Processes = _Processes
 
+# import time
+# import threading
+# import pcapy
+# 
+# def check_pcap_permissions(interfaces: str | List[str]) -> Dict[str, str]:
+#     print("Checking pcap permissions...")
+#     start = time.time()
+# 
+#     def check_interface_permissions(iface: str, err_dict: Dict[str, str]) -> None:
+#         try:
+#             cap = pcapy.open_live(iface, 1600, 1, 0)
+#             cap.close()
+#         except pcapy.PcapError as err:
+#             err_dict[iface] = err
+#     errors = {}
+#     threads = []
+#     for iface in interfaces:
+#         thread = threading.Thread(target=check_interface_permissions, args=(iface, errors))
+#         thread.start()
+#         threads.append(thread)
+# 
+#     for thread in threads:
+#         thread.join()
+# 
+#     print(f"Check pcap permission done after {time.time() - start} seconds")
+#     return errors
+
+
 if __name__ == "__main__":
+  Processes.watch(_display=True)
   print(network_interfaces())
